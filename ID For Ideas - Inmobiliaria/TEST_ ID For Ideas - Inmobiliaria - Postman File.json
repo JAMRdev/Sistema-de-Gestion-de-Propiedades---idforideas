@@ -1,0 +1,181 @@
+{
+  "info": {
+    "name": "TEST: ID For Ideas - Inmobiliaria",
+    "description": "",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Ver todas las propiedades",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "auth": {
+          "type": "noauth"
+        },
+        "description": "",
+        "url": {
+          "raw": "https://idforideas-1.jamrdev.com.ar/api/propiedades",
+          "protocol": "https",
+          "host": [
+            "idforideas-1",
+            "jamrdev",
+            "com",
+            "ar"
+          ],
+          "path": [
+            "api",
+            "propiedades"
+          ],
+          "query": [],
+          "variable": []
+        }
+      }
+    },
+    {
+      "name": "Crear propiedad (ver payload)",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "auth": {
+          "type": "noauth"
+        },
+        "description": "",
+        "url": {
+          "raw": "https://idforideas-1.jamrdev.com.ar/api/propiedades",
+          "protocol": "https",
+          "host": [
+            "idforideas-1",
+            "jamrdev",
+            "com",
+            "ar"
+          ],
+          "path": [
+            "api",
+            "propiedades"
+          ],
+          "query": [],
+          "variable": []
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"codigo_id\": \"ZN1001\",\n  \"pais\": \"Argentina\",\n  \"ciudad\": \"Tigre\",\n  \"direccion\": \"Av. Cazón 123\",\n  \"ambientes\": 3,\n  \"metros_cuadrados\": 75.5,\n  \"precio\": 120000,\n  \"tipo_contratacion\": \"Venta\",\n  \"estado\": \"Disponible\",\n  \"descripcion\": \"Hermosa vista al río\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "Ver una propiedad con ID",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "auth": {
+          "type": "noauth"
+        },
+        "description": "",
+        "url": {
+          "raw": "https://idforideas-1.jamrdev.com.ar/api/propiedades/:id",
+          "protocol": "https",
+          "host": [
+            "idforideas-1",
+            "jamrdev",
+            "com",
+            "ar"
+          ],
+          "path": [
+            "api",
+            "propiedades",
+            ":id"
+          ],
+          "query": [],
+          "variable": [
+            {
+              "key": "id",
+              "value": "ZN1001"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Editar una propiedad (cargar payload)",
+      "request": {
+        "method": "PATCH",
+        "header": [],
+        "auth": {
+          "type": "noauth"
+        },
+        "description": "",
+        "url": {
+          "raw": "https://idforideas-1.jamrdev.com.ar/api/propiedades/:id",
+          "protocol": "https",
+          "host": [
+            "idforideas-1",
+            "jamrdev",
+            "com",
+            "ar"
+          ],
+          "path": [
+            "api",
+            "propiedades",
+            ":id"
+          ],
+          "query": [],
+          "variable": [
+            {
+              "key": "id",
+              "value": "ZN1001"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "\"codigo_id\": \"ZN1002\"",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "Eliminar una propiedad con ID",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "auth": {
+          "type": "noauth"
+        },
+        "description": "",
+        "url": {
+          "raw": "https://idforideas-1.jamrdev.com.ar/api/propiedades/:id",
+          "protocol": "https",
+          "host": [
+            "idforideas-1",
+            "jamrdev",
+            "com",
+            "ar"
+          ],
+          "path": [
+            "api",
+            "propiedades",
+            ":id"
+          ],
+          "query": [],
+          "variable": [
+            {
+              "key": "id",
+              "value": ""
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "variable": []
+}
