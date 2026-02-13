@@ -1,9 +1,9 @@
-# 🏠 Sistema de Gestión Inmobiliaria  
+# 🏠 Sistema de Gestión Inmobiliaria, Inmobiliaria Bonpland Propiedades  
 ## 📘 API Documentation
 
 ¡Hola equipo! 👋  
 
-Se ha desplegado la nueva API robusta para la gestión de propiedades.  
+API para la gestión de propiedades de Inmobiliaria Bonpland Propiedades.  
 La infraestructura es **Serverless**, diseñada para alta disponibilidad y baja latencia.
 
 ---
