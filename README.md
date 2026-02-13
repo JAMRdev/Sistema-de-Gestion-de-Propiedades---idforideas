@@ -95,6 +95,7 @@ const fetchPropiedades = async () => {
 # 🧪 Para el Equipo de QA
 
 La API implementa validaciones estrictas con **Zod + OpenAPI**.
+En la carpeta "ID For Ideas - Inmobiliaria" encontrarán una colección para importar a Bruno y también encontrarán el archivo "TEST_ ID For Ideas - Inmobiliaria - Postman File" para importarlo a Postman y probar los endpoints.
 
 Escenarios clave para pruebas de regresión y smoke tests.
 
