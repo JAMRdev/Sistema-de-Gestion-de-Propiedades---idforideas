@@ -1,0 +1,12 @@
+{
+  "name": "inmobiliaria-api",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-02-12",
+"d1_databases": [
+    {
+      "binding": "DB", 
+      "database_name": "inmobiliaria-db",
+      "database_id": "db42693a-90fe-4fa6-8b03-2b9912ac5b04"
+    }
+  ]
+}
