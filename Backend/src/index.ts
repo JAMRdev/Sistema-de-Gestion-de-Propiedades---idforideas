@@ -16,15 +16,15 @@ app.openAPIRegistry.registerComponent('securitySchemes', 'basicAuth', {
 });
 
 //
-app.get('/', (c) => c.text('API Sistema de Gestión de Propiedades - ID For Ideas') );
+app.get('/', (c) => c.text('API Sistema de Gestión de Propiedades - Inmobiliaria Bonpland Propiedades, ID For Ideas') );
 
 // Documentación JSON
 app.doc('/doc', {
   openapi: '3.0.0',
   info: {
     version: '1.0.0',
-    title: 'API - ID For Ideas',
-    description: 'Gestión de propiedades',
+    title: 'API - Inmobiliaria Bonpland Propiedades',
+    description: 'Gestión de propiedades, ID For Ideas',
   },
 });
 

@@ -1,5 +1,5 @@
 {
-  "name": "inmobiliaria-api",
+  "name": "inmobiliaria-bonpland-propiedades-api",
   "type": "module",
   "scripts": {
     "dev": "wrangler dev",
