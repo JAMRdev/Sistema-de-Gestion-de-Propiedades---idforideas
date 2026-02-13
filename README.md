@@ -36,6 +36,12 @@ La infraestructura es **Serverless**, diseñada para alta disponibilidad y baja 
 
 ---
 
+### 🆔 Manejo de IDs
+* **Creación:** El campo `codigo_id` es opcional en el `POST`. Si se omite, la API generará uno alfanumérico aleatorio de 6 caracteres.
+* **Inmutabilidad:** El `codigo_id` **no puede ser modificado**. Cualquier intento de enviar un ID diferente en el `PUT/PATCH` resultará en un error `400`.
+
+---
+
 # 🎨 Para el Equipo de Frontend
 
 La API:

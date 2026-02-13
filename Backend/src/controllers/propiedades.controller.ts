@@ -22,6 +22,12 @@ export const getPropiedadById = async (c: Context) => {
 export const createPropiedad = async (c: Context) => {
   try {
     const body = await c.req.json();
+    
+    // Si no mandan codigo_id, lo generamos
+    if (!body.codigo_id) {
+      body.codigo_id = generarCodigoId();
+    }
+
     const validated = PropiedadSchema.parse(body);
 
     await c.env.DB.prepare(`
@@ -33,7 +39,7 @@ export const createPropiedad = async (c: Context) => {
       validated.tipo_contratacion, validated.estado, validated.descripcion || ''
     ).run();
 
-    return c.json({ success: true, message: 'Propiedad creada' }, 201);
+    return c.json({ success: true, message: 'Propiedad creada', id: validated.codigo_id }, 201);
   } catch (err: any) {
     return c.json({ success: false, error: err.message }, 400);
   }
@@ -44,13 +50,51 @@ export const updatePropiedad = async (c: Context) => {
   const id = c.req.param('id');
   try {
     const body = await c.req.json();
-    // Validamos parcialmente (por si solo mandas el precio o el estado)
+    
+    // VALIDACIÓN: Si el body trae un codigo_id distinto al de la URL, lanzamos error
+    if (body.codigo_id && body.codigo_id !== id) {
+      return c.json({ 
+        success: false, 
+        error: "No está permitido modificar el código identificador de la propiedad." 
+      }, 400);
+    }
+
     const validated = PropiedadSchema.partial().parse(body);
 
-    // Ejemplo simple actualizando precio y estado
-    await c.env.DB.prepare('UPDATE propiedades SET precio = COALESCE(?, precio), estado = COALESCE(?, estado) WHERE codigo_id = ?')
-      .bind(validated.precio, validated.estado, id)
-      .run();
+    const p = {
+      pais: validated.pais ?? null,
+      ciudad: validated.ciudad ?? null,
+      direccion: validated.direccion ?? null,
+      ambientes: validated.ambientes ?? null,
+      metros_cuadrados: validated.metros_cuadrados ?? null,
+      precio: validated.precio ?? null,
+      tipo_contratacion: validated.tipo_contratacion ?? null,
+      estado: validated.estado ?? null,
+      descripcion: validated.descripcion ?? null,
+    };
+
+    const result = await c.env.DB.prepare(`
+      UPDATE propiedades SET 
+        pais = COALESCE(?, pais),
+        ciudad = COALESCE(?, ciudad),
+        direccion = COALESCE(?, direccion),
+        ambientes = COALESCE(?, ambientes),
+        metros_cuadrados = COALESCE(?, metros_cuadrados),
+        precio = COALESCE(?, precio),
+        tipo_contratacion = COALESCE(?, tipo_contratacion),
+        estado = COALESCE(?, estado),
+        descripcion = COALESCE(?, descripcion)
+      WHERE codigo_id = ?
+    `).bind(
+      p.pais, p.ciudad, p.direccion,
+      p.ambientes, p.metros_cuadrados, p.precio,
+      p.tipo_contratacion, p.estado, p.descripcion, 
+      id
+    ).run();
+
+    if (result.meta.changes === 0) {
+      return c.json({ success: false, error: "Propiedad no encontrada" }, 404);
+    }
 
     return c.json({ success: true, message: 'Propiedad actualizada' });
   } catch (err: any) {
@@ -63,4 +107,14 @@ export const deletePropiedad = async (c: Context) => {
   const id = c.req.param('id');
   await c.env.DB.prepare('DELETE FROM propiedades WHERE codigo_id = ?').bind(id).run();
   return c.json({ success: true, message: 'Propiedad eliminada' });
+};
+
+// Función para generar un código ID único de 6 caracteres
+const generarCodigoId = () => {
+  const caracteres = 'ABCDEFGHIJKLMNPQRSTUVWXYZ123456789'; // Evitamos O y 0 para no confundir
+  let resultado = '';
+  for (let i = 0; i < 6; i++) {
+    resultado += caracteres.charAt(Math.floor(Math.random() * caracteres.length));
+  }
+  return resultado;
 };
