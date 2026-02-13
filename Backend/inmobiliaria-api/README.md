@@ -1,70 +1,199 @@
-# 🏠 Sistema de Gestión Inmobiliaria - API Documentation
+# 🏠 Sistema de Gestión Inmobiliaria  
+## 📘 API Documentation
 
-¡Hola equipo! Hemos desplegado la nueva API robusta para la gestión de propiedades (enfocada en las operaciones de Zona Norte y Oeste). Esta infraestructura es **Serverless**, diseñada para alta disponibilidad y baja latencia.
+¡Hola equipo! 👋  
 
-## 🚀 Stack Tecnológico
-* **Runtime:** Cloudflare Workers (Edge Computing).
-* **Framework:** Hono (v4+) con soporte nativo para OpenAPI/Swagger.
-* **Base de Datos:** Cloudflare D1 (SQL Relacional).
-* **Validación:** Zod (Garantiza integridad de tipos en Runtime).
+Se ha desplegado la nueva API robusta para la gestión de propiedades.  
+La infraestructura es **Serverless**, diseñada para alta disponibilidad y baja latencia.
 
 ---
 
-## 🔗 Enlaces de Interés
-* **Base URL:** `https://idforideas-1.jamrdev.com.ar/api`
-* **Documentación Interactiva (Swagger UI):** [Abrir Swagger](https://idforideas-1.jamrdev.com.ar/ui)
-* **Especificación Técnica (JSON):** `/doc`
+# 🚀 Stack Tecnológico
+
+| Componente | Tecnología |
+|------------|------------|
+| **Runtime** | Cloudflare Workers (Edge Computing) |
+| **Framework** | Hono v4+ (con soporte nativo OpenAPI/Swagger) |
+| **Base de Datos** | Cloudflare D1 (SQL relacional) |
+| **Validación** | Zod (integridad de tipos en runtime) |
 
 ---
 
-## 🎨 Para el equipo de Frontend
+# 🔗 Enlaces de Interés
 
-La API tiene **CORS habilitado** y expone contratos claros mediante Swagger.
+- **Base URL:**  
+  ```
+  https://idforideas-1.jamrdev.com.ar/api
+  ```
 
-### Autenticación
-Las rutas de administración (`POST`, `PUT`, `DELETE`) están protegidas mediante **Basic Auth**.
-- **Header:** `Authorization: Basic <credentials>`
-- **Tip:** Pueden usar el endpoint `GET /api/auth/verify` para validar las credenciales ingresadas por el usuario en el login del panel antes de guardarlas en el estado global.
+- **Swagger UI (Documentación Interactiva):**  
+  https://idforideas-1.jamrdev.com.ar/ui
 
-### Ejemplo de integración rápida (JavaScript):
+- **OpenAPI JSON:**  
+  ```
+  /doc
+  ```
+
+---
+
+# 🎨 Para el Equipo de Frontend
+
+La API:
+
+- ✅ Tiene **CORS habilitado**
+- ✅ Expone contratos claros mediante **Swagger**
+- ✅ Mantiene validaciones estrictas
+
+---
+
+## 🔐 Autenticación
+
+Las rutas administrativas (`POST`, `PUT`, `DELETE`) utilizan **Basic Auth**.
+
+**Header requerido:**
+
+```
+Authorization: Basic <credentials>
+```
+
+💡 **Tip:**  
+
+Usar el endpoint:
+
+```
+GET /api/auth/verify
+```
+
+Para validar credenciales antes de guardarlas en el estado global del panel.
+
+---
+
+## 💻 Ejemplo de Integración (JavaScript)
+
 ```javascript
 const fetchPropiedades = async () => {
   try {
-    const response = await fetch('[https://idforideas-1.jamrdev.com.ar/api/propiedades](https://idforideas-1.jamrdev.com.ar/api/propiedades)');
+    const response = await fetch(
+      'https://idforideas-1.jamrdev.com.ar/api/propiedades'
+    );
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
     const data = await response.json();
     return data;
+
   } catch (error) {
     console.error("Error cargando propiedades:", error);
   }
 };
+```
 
+---
 
-## 🧪 Guía de Testing - API Inmobiliaria
+# 🧪 Para el Equipo de QA
 
-La API implementa validaciones de esquema estrictas mediante **Zod** y **OpenAPI**. A continuación, los escenarios clave para pruebas de regresión y humo.
+La API implementa validaciones estrictas con **Zod + OpenAPI**.
 
-### 1. Endpoints de Verificación
+Escenarios clave para pruebas de regresión y smoke tests.
+
+---
+
+## 1️⃣ Endpoints de Verificación
+
 | Método | Ruta | Objetivo |
-| :--- | :--- | :--- |
-| `GET` | `/api/auth/verify` | Validar credenciales de Admin (Basic Auth). |
-| `GET` | `/doc` | Validar que el JSON de OpenAPI esté actualizado. |
+|--------|------|----------|
+| `GET` | `/api/auth/verify` | Validar credenciales Admin (Basic Auth) |
+| `GET` | `/doc` | Verificar que el JSON OpenAPI esté actualizado |
 
-### 2. Casos de Prueba (Validación de Datos)
-* **Código ID Único:** Intentar crear una propiedad con un `codigo_id` que no tenga exactamente 6 caracteres (ej: `ABC1` o `ABC1234`). La API debe retornar `400 Bad Request`.
-* **Tipos de Datos:** Enviar el campo `precio` como un string (`"100.000"`) en lugar de number (`100000`). Debe fallar con error de validación.
-* **Enumeraciones:** Intentar setear un `estado` fuera de los permitidos (`Disponible`, `Reservado`, `Alquilado`, `Vendido`).
-* **Campos Obligatorios:** Intentar un POST omitiendo la `ciudad` o `dirección`.
+---
 
-### 3. Pruebas de Seguridad
-* **Acceso No Autorizado:** Intentar un `POST`, `PUT` o `DELETE` sin el Header `Authorization`. Resultado esperado: `401 Unauthorized`.
-* **Persistencia:** Tras un `POST` exitoso, verificar que el `codigo_id` aparezca en el listado general `GET /api/propiedades`.
+## 2️⃣ Casos de Prueba — Validación de Datos
 
+### 🔎 Código ID Único
 
-## ⚙️ Infraestructura y Despliegue (DevOps)
+- Crear propiedad con `codigo_id` que **no tenga exactamente 6 caracteres**
+  - Ej: `ABC1`
+  - Ej: `ABC1234`
+- ✅ Esperado: `400 Bad Request`
 
-La API corre sobre la red global de **Cloudflare** utilizando un modelo de ejecución *Serverless* de baja latencia.
+---
 
-### 📦 Stack de Infraestructura
-* **Runtime:** Cloudflare Workers (V8 Isolation).
-* **Database:** Cloudflare D1 (Motor SQLite distribuido).
-* **Domain:** `idforideas-1.jamrdev.com.ar`
+### 🔢 Tipos de Datos
+
+Enviar `precio` como string:
+
+```json
+{ "precio": "100.000" }
+```
+
+En lugar de:
+
+```json
+{ "precio": 100000 }
+```
+
+- ✅ Esperado: Error de validación
+
+---
+
+### 📌 Enumeraciones
+
+Intentar enviar un `estado` fuera de los permitidos:
+
+- Disponible  
+- Reservado  
+- Alquilado  
+- Vendido  
+
+- ✅ Esperado: Error de validación
+
+---
+
+### 📍 Campos Obligatorios
+
+Intentar `POST` omitiendo:
+
+- `ciudad`
+- `direccion`
+
+- ✅ Esperado: `400 Bad Request`
+
+---
+
+## 3️⃣ Pruebas de Seguridad
+
+### 🚫 Acceso No Autorizado
+
+- Ejecutar `POST`, `PUT` o `DELETE`
+- Sin header `Authorization`
+
+- ✅ Esperado: `401 Unauthorized`
+
+---
+
+### 💾 Persistencia
+
+1. Realizar `POST` exitoso  
+2. Validar que el `codigo_id` aparezca en:
+
+```
+GET /api/propiedades
+```
+
+---
+
+# ⚙️ Infraestructura y Despliegue (DevOps)
+
+La API corre sobre la red global de **Cloudflare** utilizando un modelo *Serverless* de baja latencia.
+
+---
+
+## 📦 Stack de Infraestructura
+
+| Componente | Tecnología |
+|------------|------------|
+| **Runtime** | Cloudflare Workers (V8 Isolation) |
+| **Database** | Cloudflare D1 (SQLite distribuido) |
+| **Dominio** | idforideas-1.jamrdev.com.ar |
