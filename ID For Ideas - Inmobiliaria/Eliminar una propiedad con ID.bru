@@ -1,0 +1,20 @@
+meta {
+  name: Eliminar una propiedad con ID
+  type: http
+  seq: 5
+}
+
+delete {
+  url: https://idforideas-1.jamrdev.com.ar/api/propiedades/:id
+  body: none
+  auth: inherit
+}
+
+params:path {
+  id: 
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

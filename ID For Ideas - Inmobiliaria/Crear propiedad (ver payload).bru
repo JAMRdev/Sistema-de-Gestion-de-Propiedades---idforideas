@@ -1,0 +1,31 @@
+meta {
+  name: Crear propiedad (ver payload)
+  type: http
+  seq: 2
+}
+
+post {
+  url: https://idforideas-1.jamrdev.com.ar/api/propiedades
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "codigo_id": "ZN1001",
+    "pais": "Argentina",
+    "ciudad": "Tigre",
+    "direccion": "Av. Cazón 123",
+    "ambientes": 3,
+    "metros_cuadrados": 75.5,
+    "precio": 120000,
+    "tipo_contratacion": "Venta",
+    "estado": "Disponible",
+    "descripcion": "Hermosa vista al río"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
