@@ -1,13 +1,13 @@
 import { Context } from 'hono';
 import { PropiedadSchema } from '../db/schema';
 
-// Listar todas
+// Listar todas las propiedades
 export const getAllPropiedades = async (c: Context) => {
   const { results } = await c.env.DB.prepare('SELECT * FROM propiedades').all();
   return c.json(results);
 };
 
-// Ver una sola por ID
+// Ver una sola propiedad por ID
 export const getPropiedadById = async (c: Context) => {
   const id = c.req.param('id');
   const propiedad = await c.env.DB.prepare('SELECT * FROM propiedades WHERE codigo_id = ?')
@@ -18,7 +18,7 @@ export const getPropiedadById = async (c: Context) => {
   return c.json(propiedad);
 };
 
-// Crear
+// Crear propiedad
 export const createPropiedad = async (c: Context) => {
   try {
     const body = await c.req.json();
@@ -39,7 +39,7 @@ export const createPropiedad = async (c: Context) => {
   }
 };
 
-// Actualizar
+// Actualizar propiedad
 export const updatePropiedad = async (c: Context) => {
   const id = c.req.param('id');
   try {
@@ -58,7 +58,7 @@ export const updatePropiedad = async (c: Context) => {
   }
 };
 
-// Eliminar
+// Eliminar propiedad
 export const deletePropiedad = async (c: Context) => {
   const id = c.req.param('id');
   await c.env.DB.prepare('DELETE FROM propiedades WHERE codigo_id = ?').bind(id).run();

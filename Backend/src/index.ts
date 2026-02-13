@@ -2,7 +2,7 @@ import { OpenAPIHono } from '@hono/zod-openapi';
 import { swaggerUI } from '@hono/swagger-ui';
 import { cors } from 'hono/cors';
 import propiedades from './routes/propiedades';
-import auth from './routes/auth'; // 1. Importá el archivo de auth
+import auth from './routes/auth';
 
 const app = new OpenAPIHono();
 
@@ -33,6 +33,6 @@ app.get('/ui', swaggerUI({ url: '/doc' }));
 
 // Montar rutas
 app.route('/api/propiedades', propiedades);
-app.route('/api/auth', auth); // 2. Montá las rutas de autenticación
+app.route('/api/auth', auth);
 
 export default app;

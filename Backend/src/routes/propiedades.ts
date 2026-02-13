@@ -96,13 +96,10 @@ propiedades.openapi(createRouteDoc, async (c) => {
   await adminAuthMiddleware(c, async () => {}); // Ejecuta el middleware
   return controller.createPropiedad(c);
 });
-
-// Debajo de tus otras rutas .openapi()
 propiedades.openapi(updateRouteDoc, async (c) => {
   await adminAuthMiddleware(c, async () => {}); 
   return controller.updatePropiedad(c);
 });
-
 propiedades.openapi(deleteRouteDoc, async (c) => {
   await adminAuthMiddleware(c, async () => {});
   return controller.deletePropiedad(c);
