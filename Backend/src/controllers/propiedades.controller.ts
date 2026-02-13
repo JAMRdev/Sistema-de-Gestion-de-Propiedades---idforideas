@@ -18,28 +18,78 @@ export const getPropiedadById = async (c: Context) => {
   return c.json(propiedad);
 };
 
-// Crear propiedad
+
+// Función auxiliar para generar el código
+const generarCodigoId = () => {
+  const caracteres = 'ABCDEFGHIJKLMNPQRSTUVWXYZ123456789';
+  let resultado = '';
+  for (let i = 0; i < 6; i++) {
+    resultado += caracteres.charAt(Math.floor(Math.random() * caracteres.length));
+  }
+  return resultado;
+};
+
 export const createPropiedad = async (c: Context) => {
   try {
     const body = await c.req.json();
     
-    // Si no mandan codigo_id, lo generamos
-    if (!body.codigo_id) {
-      body.codigo_id = generarCodigoId();
+    // 1. Definir el ID inicial (el enviado o uno generado)
+    let uniqueId = body.codigo_id || generarCodigoId();
+    let isUnique = false;
+    let attempts = 0;
+
+    // 2. Bucle para evitar duplicados (Colisiones)
+    while (!isUnique && attempts < 5) {
+      const existing = await c.env.DB.prepare('SELECT codigo_id FROM propiedades WHERE codigo_id = ?')
+        .bind(uniqueId)
+        .first();
+
+      if (!existing) {
+        isUnique = true; // El ID está libre
+      } else {
+        // Si el usuario envió uno y ya existe, lanzamos error
+        if (body.codigo_id) {
+          return c.json({ success: false, error: `El código ${body.codigo_id} ya existe.` }, 409);
+        }
+        // Si era autogenerado, generamos otro y reintentamos
+        uniqueId = generarCodigoId();
+        attempts++;
+      }
     }
 
+    // Si después de 5 intentos no logramos un ID único (altamente improbable)
+    if (!isUnique) throw new Error("No se pudo generar un identificador único. Intente nuevamente.");
+
+    // 3. Asignamos el ID validado al body antes de pasar por Zod
+    body.codigo_id = uniqueId;
     const validated = PropiedadSchema.parse(body);
 
+    // 4. Inserción final en la DB
     await c.env.DB.prepare(`
-      INSERT INTO propiedades (codigo_id, pais, ciudad, direccion, ambientes, metros_cuadrados, precio, tipo_contratacion, estado, descripcion)
+      INSERT INTO propiedades (
+        codigo_id, pais, ciudad, direccion, ambientes, 
+        metros_cuadrados, precio, tipo_contratacion, estado, descripcion
+      )
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `).bind(
-      validated.codigo_id, validated.pais, validated.ciudad, validated.direccion,
-      validated.ambientes, validated.metros_cuadrados, validated.precio,
-      validated.tipo_contratacion, validated.estado, validated.descripcion || ''
+      validated.codigo_id,
+      validated.pais,
+      validated.ciudad,
+      validated.direccion,
+      validated.ambientes,
+      validated.metros_cuadrados,
+      validated.precio,
+      validated.tipo_contratacion,
+      validated.estado,
+      validated.descripcion || ''
     ).run();
 
-    return c.json({ success: true, message: 'Propiedad creada', id: validated.codigo_id }, 201);
+    return c.json({ 
+      success: true, 
+      message: 'Propiedad creada correctamente', 
+      id: validated.codigo_id 
+    }, 201);
+
   } catch (err: any) {
     return c.json({ success: false, error: err.message }, 400);
   }
@@ -109,12 +159,3 @@ export const deletePropiedad = async (c: Context) => {
   return c.json({ success: true, message: 'Propiedad eliminada' });
 };
 
-// Función para generar un código ID único de 6 caracteres
-const generarCodigoId = () => {
-  const caracteres = 'ABCDEFGHIJKLMNPQRSTUVWXYZ123456789'; // Evitamos O y 0 para no confundir
-  let resultado = '';
-  for (let i = 0; i < 6; i++) {
-    resultado += caracteres.charAt(Math.floor(Math.random() * caracteres.length));
-  }
-  return resultado;
-};

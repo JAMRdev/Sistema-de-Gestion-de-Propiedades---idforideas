@@ -12,12 +12,9 @@ post {
 
 body:json {
   {
-    "codigo_id": "ZN1001",
     "pais": "Argentina",
     "ciudad": "Tigre",
     "direccion": "Av. Cazón 123",
-    "ambientes": 3,
-    "metros_cuadrados": 75.5,
     "precio": 120000,
     "tipo_contratacion": "Venta",
     "estado": "Disponible",
@@ -28,4 +25,113 @@ body:json {
 settings {
   encodeUrl: true
   timeout: 0
+}
+
+example {
+  name: Exito - Propiedad creada ENVIANDO EL ID
+  
+  request: {
+    url: https://idforideas-1.jamrdev.com.ar/api/propiedades
+    method: POST
+    mode: json
+    body:json: {
+      {
+        "codigo_id": "ZN1003",
+        "pais": "Argentina",
+        "ciudad": "Tigre",
+        "direccion": "Av. Cazón 123",
+        "ambientes": 3,
+        "metros_cuadrados": 75.5,
+        "precio": 120000,
+        "tipo_contratacion": "Venta",
+        "estado": "Disponible",
+        "descripcion": "Hermosa vista al río"
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      date: Fri, 13 Feb 2026 03:03:14 GMT
+      content-type: application/json
+      content-length: 73
+      connection: keep-alive
+      access-control-allow-origin: *
+      report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=1Cv2ZefSlwNjOk%2BZyMchbsAVtz6F2zcQWfPmYhygtsulqAKUry5PHOP1jWtWZ8z%2FrDOFRQg28CM%2BbrLWjC5sPN%2BGXbWvXRQPlTL9bZL4FhXDs%2B3CRZsyAI5APO9wRtK%2Bi5rey9k%3D"}]}
+      nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+      server: cloudflare
+      cf-ray: 9cd1176ace780ba0-EZE
+      alt-svc: h3=":443"; ma=86400
+    }
+  
+    status: {
+      code: 201
+      text: Created
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "success": true,
+          "message": "Propiedad creada correctamente",
+          "id": "ZN1003"
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Exito - Propiedad creada SIN ENVIAR EL ID
+  
+  request: {
+    url: https://idforideas-1.jamrdev.com.ar/api/propiedades
+    method: POST
+    mode: json
+    body:json: {
+      {
+        "pais": "Argentina",
+        "ciudad": "Tigre",
+        "direccion": "Av. Cazón 123",
+        "ambientes": 3,
+        "metros_cuadrados": 75.5,
+        "precio": 120000,
+        "tipo_contratacion": "Venta",
+        "estado": "Disponible",
+        "descripcion": "Hermosa vista al río"
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      date: Fri, 13 Feb 2026 03:03:53 GMT
+      content-type: application/json
+      content-length: 73
+      connection: keep-alive
+      access-control-allow-origin: *
+      report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=GY6jymQm0pT8gn5k8a6Zljh0Ig3btxWJTpNXuUGMX%2FC4HgUhR%2BzzsrU2bQLkCtBVyOber0kj4VWmGBIlP7HbDhA%2FUKTfvZqAFbMR3gQxprv1NtGfgjCMSLb1JGRrgscL2%2Bmufp%2BEsg%3D%3D"}]}
+      nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+      server: cloudflare
+      cf-ray: 9cd1185d9f064c58-EZE
+      alt-svc: h3=":443"; ma=86400
+    }
+  
+    status: {
+      code: 201
+      text: Created
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "success": true,
+          "message": "Propiedad creada correctamente",
+          "id": "BGCKCE"
+        }
+      '''
+    }
+  }
 }

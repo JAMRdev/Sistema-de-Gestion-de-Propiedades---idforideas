@@ -15,10 +15,114 @@ params:path {
 }
 
 body:json {
-  "codigo_id": "ZN1002"
+    {
+      "metros_cuadrados": 76.5,
+      "precio": 135000
+    }
 }
 
 settings {
   encodeUrl: true
   timeout: 0
+}
+
+example {
+  name: Error - Edición de "codigo_id"
+  description: No se puede editar un ID de una propiedad.
+  
+  request: {
+    url: https://idforideas-1.jamrdev.com.ar/api/propiedades/:id
+    method: PATCH
+    mode: json
+    params:path: {
+      id: ZN1001
+    }
+  
+    body:json: {
+        {
+          "codigo_id": "ZN1002"
+        }
+    }
+  }
+  
+  response: {
+    headers: {
+      date: Fri, 13 Feb 2026 02:55:52 GMT
+      content-type: application/json
+      content-length: 98
+      connection: keep-alive
+      access-control-allow-origin: *
+      report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=%2BilQ75wXYif4OdDzW%2FRnw3hdAZkG8hXfRqcyW2KjpKLapkWHBQhke37Giy%2Fckw%2FWQse3yf0eh1rvvzEhL%2BYVdmwo2yJCpCwt02%2B3G4CubJg2IQBQAoRTcw8NAHoJVq18%2B2mOqL0%3D"}]}
+      nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+      server: cloudflare
+      cf-ray: 9cd10c9eec311e8e-EZE
+      alt-svc: h3=":443"; ma=86400
+    }
+  
+    status: {
+      code: 400
+      text: Bad Request
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "success": false,
+          "error": "No está permitido modificar el código identificador de la propiedad."
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Exito - Edición de otros campos
+  description: Todos los campos, a excepción de "codigo_id" se pueden modificar.
+  
+  request: {
+    url: https://idforideas-1.jamrdev.com.ar/api/propiedades/:id
+    method: PATCH
+    mode: json
+    params:path: {
+      id: ZN1001
+    }
+  
+    body:json: {
+        {
+          "metros_cuadrados": 76.5,
+          "precio": 135000
+        }
+    }
+  }
+  
+  response: {
+    headers: {
+      date: Fri, 13 Feb 2026 02:56:59 GMT
+      content-type: application/json
+      transfer-encoding: chunked
+      connection: keep-alive
+      access-control-allow-origin: *
+      report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=1TphJPwIVs2VlCxZt8%2BFXZEEznC4%2FxZ80bJdOdgS2rCQks%2FvfB0G95IGEQ3%2BzpVIBs%2BbBpvQ%2BrnDTFpzCOTF6iSwJZQaLYPJgrQipsrxivYdhxXYVoTIE2X75Cm9urbmQviH73yMyA%3D%3D"}]}
+      nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+      server: cloudflare
+      cf-ray: 9cd10e41a8948e5b-EZE
+      alt-svc: h3=":443"; ma=86400
+    }
+  
+    status: {
+      code: 200
+      text: OK
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "success": true,
+          "message": "Propiedad actualizada"
+        }
+      '''
+    }
+  }
 }

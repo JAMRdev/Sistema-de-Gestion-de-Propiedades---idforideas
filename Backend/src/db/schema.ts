@@ -1,7 +1,7 @@
 import { z } from '@hono/zod-openapi';
 
 export const PropiedadSchema = z.object({
-  codigo_id: z.string().openapi({ example: 'ZN1001', description: 'ID único alfanumérico' }),
+  codigo_id: z.string().length(6).optional().openapi({ example: 'ZN1001' }),
   pais: z.string().openapi({ example: 'Argentina' }),
   ciudad: z.string().openapi({ example: 'Tigre' }),
   direccion: z.string().openapi({ example: 'Av. Cazón 123' }),
